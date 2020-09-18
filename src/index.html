@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="author" content="VF" />
+		<meta name="description" content="Aprendendo Ecommerce" />
+		<meta name="keywords" content="ecommerce online" />
+		<meta name="copyright" content="Victor e Fabricio" />
+		<meta name="theme-color" content="#1976d2" />
+		<link href="favicon.ico" rel="icon" type="image/x-icon" />
+		<link href="assets/font/roboto/style.css" rel="stylesheet" />
+		<link href="assets/font/material/style.css" rel="stylesheet" />
+		<link rel="manifest" href="manifest.webmanifest" />
+		<title>Matrícula</title>
+		<script>
+			var client = '0.6.8';
+			var request = new XMLHttpRequest();
+			var random = Math.random()
+				.toString(36)
+				.replace(/[^a-z]+/g, '');
+			request.open('GET', 'assets/version?hash=' + random);
+			request.onloadend = function () {
+				var server = request.responseText.replace(/[\n\r]+/g, '');
+				if (client != server) {
+					if (!alert('Nova versão disponível. Clique em OK para atualizar!')) {
+						window.location.reload(true);
+					}
+				}
+			};
+			request.send();
+		</script>
+	</head>
+
+	<body class="mat-typography">
+		<mg-app><br /><span style="margin: 1em">Aguarde...</span></mg-app>
+		<noscript>Favor habilitar JavaScript em seu navegador para utlizar esta aplicação.</noscript>
+	</body>
+</html>
