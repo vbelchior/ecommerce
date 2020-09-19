@@ -1,6 +1,6 @@
 import { TypeUtil } from '../utils';
 
-export class DeficienciaModel {
+export class UserModel {
     public id: number;
 
     public name: string;
@@ -31,9 +31,9 @@ export class DeficienciaModel {
         if (TypeUtil.exists(id)) this.id = id;
     }
 
-    public static factory(source: any): DeficienciaModel {
-        if (!TypeUtil.exists(source)) return new DeficienciaModel();
-        let target: DeficienciaModel = new DeficienciaModel(source.id);
+    public static factory(source: any): UserModel {
+        if (!TypeUtil.exists(source)) return new UserModel();
+        let target: UserModel = new UserModel(source.id);
         if (TypeUtil.exists(source.name)) target.name = source.name;
         if (TypeUtil.exists(source.phone)) target.phone = source.phone;
         if (TypeUtil.exists(source.email)) target.email = source.email;
@@ -49,7 +49,7 @@ export class DeficienciaModel {
         return target;
     }
 
-    public equals(other: DeficienciaModel): boolean {
+    public equals(other: UserModel): boolean {
         if (!TypeUtil.exists(other)) return false;
         if (this.id !== other.id) return false;
         if (this.name !== other.name) return false;

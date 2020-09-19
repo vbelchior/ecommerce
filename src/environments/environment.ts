@@ -1,6 +1,6 @@
 export const environment = {
-			production: false,
-			platform: 'browser',
-			client: 'http://localhost:4200',
-			server: 'http://localhost:3000/m1ma-backend'
-		};
+	production: false,
+	platform: 'browser',
+	client: 'http://localhost:4200',
+	server: 'hhttp://127.0.0.1:5500'
+};
