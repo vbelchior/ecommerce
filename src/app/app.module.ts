@@ -126,8 +126,8 @@ const maskConfig: Partial<IConfig> = {
 			provide: MatPaginatorIntl,
 			useValue: getBrazilianPaginatorIntl()
 		},
-		UserService,
+		UserService
 	],
 	bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

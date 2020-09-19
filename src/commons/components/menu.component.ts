@@ -1,3 +1,4 @@
+import { UserModel } from '@commons/models';
 import { Component, Input } from '@angular/core';
 
 @Component({
@@ -89,9 +90,11 @@ export class MenuComponent {
 	constructor() {
 		this.titleName = '';
 		this.large = true;
+		this.setupMenu();
 	}
 
 	private setupMenu() {
 		this.items = [];
+		this.items.push({ name: 'Usuário', link: '/users', icon: 'people' });
 	}
 }
