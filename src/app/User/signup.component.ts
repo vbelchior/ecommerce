@@ -8,7 +8,7 @@ import { PersonModel } from '@commons/models';
 import { PersonService } from '@commons/services';
 
 @Component({
-	selector: 'th-account-signup',
+	selector: 'account-signup',
 	template: `
 		<div fxLayout="row" fxLayoutAlign="center center">
 			<mat-card fxFlex="40" fxFlex.lt-md="90">
@@ -125,6 +125,6 @@ export class SignupComponent {
 	}
 
 	public onLogin(): void {
-		//this.router.navigate(['login']);
+		this.router.navigate(['login']);
 	}
 }

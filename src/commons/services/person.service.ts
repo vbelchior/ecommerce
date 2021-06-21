@@ -10,6 +10,11 @@ interface CountInterface {
 	count: number;
 }
 
+export interface LoginInterface {
+	user: string;
+	secret: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -53,6 +58,11 @@ export class PersonService {
 		return this.httpClient.delete(path).pipe(catchError((error) => throwError(error)));
 	}
 
+	public login(login: LoginInterface): Observable<PersonModel> {
+		const path: string = `${environment.server}/login`;
+		return this.httpClient.post<PersonModel>(path, login).pipe(catchError((error) => throwError(error)));
+	}
+
 	/*public filter(
 
         zona?: number
@@ -61,9 +71,7 @@ export class PersonService {
         let query: HttpParams = new HttpParams();
         if (TypeUtil.isFullString(municipio, true)) query = query.append('municipioParte', municipio);
         if (TypeUtil.exists(zona)) query = query.append('idZona', String(zona));
-        return this.httpClient
-            .get<PersonModel[]>(path, { params: query })
-            .pipe(catchError((error) => throwError(error)));
+
     }*/
 
 	public count(): Observable<number> {
