@@ -64,7 +64,6 @@ export class PersonService {
 	}
 
 	/*public filter(
-
         zona?: number
     ): Observable<PersonModel[]> {
         const path: string = `${environment.server}/escolas`;

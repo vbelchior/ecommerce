@@ -41,7 +41,8 @@ import { PersonService } from '@commons/services';
 						<mat-select fxFlex="48" formControlName="type" placeholder="Tipo de usuário" class="select">
 							<mat-option> </mat-option>
 							<mat-option value="A"> Atendente </mat-option>
-							<mat-option value="U"> Usuário </mat-option>
+							<mat-option value="G"> Gerente </mat-option>
+							<mat-option value="S"> Suporte </mat-option>
 						</mat-select>
 					</div>
 				</mat-card-content>
@@ -96,30 +97,29 @@ export class SignupComponent {
 	}
 
 	public async onSignup(): Promise<void> {
-		this.personEntity = new PersonModel({
-			name: this.formGroup.controls.name.value,
-			nickname: this.formGroup.controls.nickname.value,
-			user: this.formGroup.controls.user.value,
-			password: this.formGroup.controls.secretConfirmation.value,
-			type: this.formGroup.controls.type.value
-		});
-		if (!this.formGroup.valid) {
-			this.snackBar.open('Favor preencher todos os campos do formulário');
+		if (this.formGroup.controls.secret.value !== this.formGroup.controls.secretConfirmation.value) {
+			this.formGroup.controls.secretConfirmation.setErrors({ required: true });
+			this.snackBar.open('Senha errada');
 			return;
-		} else {
+		}
+		if (this.formGroup.valid) {
+			this.personEntity = new PersonModel({
+				name: this.formGroup.controls.name.value,
+				nickname: this.formGroup.controls.nickname.value,
+				user: this.formGroup.controls.user.value,
+				password: this.formGroup.controls.secretConfirmation.value,
+				type: this.formGroup.controls.type.value
+			});
 			this.personService
 				.create(this.personEntity)
 				.toPromise()
 				.then()
 				.catch((error) => {
 					console.error(error);
-					if (error?.error?.error == 'Already Exists') this.snackBar.open('Esse e-mail já está cadastrado', null, AngularUtil.makeSnackConfig('warn'));
-					else this.snackBar.open('Falha ao cadastrar usuário!', null, AngularUtil.makeSnackConfig('warn'));
 				});
-		}
-		if (this.formGroup.controls.secret.value !== this.formGroup.controls.secretConfirmation.value) {
-			this.formGroup.controls.secretConfirmation.setErrors({ required: true });
-			this.snackBar.open('Senha errada');
+			return;
+		} else {
+			this.snackBar.open('Favor preencher todos os campos do formulário');
 			return;
 		}
 	}

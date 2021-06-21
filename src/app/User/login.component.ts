@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { PersonService } from '@commons/services';
 import { AngularUtil } from './../../commons/utils/angular.util';
 
 import { LoginInterface } from '@commons/services/person.service';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
 	selector: 'account-login',
@@ -50,14 +51,36 @@ import { LoginInterface } from '@commons/services/person.service';
 		`
 	]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 	public formGroup: FormGroup;
+
+	public login: LoginInterface;
 
 	constructor(private formBuilder: FormBuilder, private personService: PersonService, private router: Router, private snackBar: MatSnackBar) {
 		this.formGroup = this.formBuilder.group({
 			user: ['', Validators.required],
 			secret: ['', Validators.required]
 		});
+		this.login = { user: '', secret: '' };
+	}
+	private save(json: any) {
+		this.login.user = json.user;
+		this.login.secret = json.secret;
+	}
+
+	ngOnInit() {
+		this.formGroup.valueChanges
+			.pipe(
+				debounceTime(1000),
+				distinctUntilChanged(),
+				map((group: any) => {
+					return {
+						user: group.user,
+						secret: group.secret
+					};
+				})
+			)
+			.subscribe((json: any) => this.save(json));
 	}
 
 	public onSignup(): void {
@@ -67,11 +90,10 @@ export class LoginComponent {
 		if (!this.formGroup.valid) {
 			return;
 		} else {
-			let login: LoginInterface;
-			login.user = this.formGroup.controls.user.value;
-			login.secret = this.formGroup.controls.secret.value;
+			console.debug(this.login);
+
 			this.personService
-				.login(login)
+				.login(this.login)
 				.toPromise()
 				.then(() => console.debug('loguei'))
 				.catch((error) => {
