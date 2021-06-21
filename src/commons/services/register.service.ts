@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { RegisterModel } from '../models';
+import { PersonModel, RegisterModel } from '../models';
 import { TypeUtil } from '../utils';
 import { environment } from 'src/environments/environment';
 
@@ -53,15 +53,20 @@ export class RegisterService {
 		return this.httpClient.delete(path).pipe(catchError((error) => throwError(error)));
 	}
 
-	/*public filter(
-        zona?: number
-    ): Observable<RegisterModel[]> {
-        const path: string = `${environment.server}/escolas`;
-        let query: HttpParams = new HttpParams();
-        if (TypeUtil.isFullString(municipio, true)) query = query.append('municipioParte', municipio);
-        if (TypeUtil.exists(zona)) query = query.append('idZona', String(zona));
+	public filter(personId?: number, date?: Date, dateEnd?: Date, status?: number, risk?: number, priority?: number, isOnline?: boolean, offset?: number, limit?: number): Observable<RegisterModel[]> {
+		const path: string = `${environment.server}/registers`;
+		let query: HttpParams = new HttpParams();
+		if (TypeUtil.exists(personId)) query = query.append('personId', personId);
+		if (TypeUtil.exists(status)) query = query.append('status', status);
+		if (TypeUtil.exists(risk)) query = query.append('risk', risk);
 
-    }*/
+		if (TypeUtil.exists(priority)) query = query.append('priority', priority);
+		if (TypeUtil.exists(isOnline)) query = query.append('isOnline', isOnline);
+		if (TypeUtil.exists(offset)) query = query.append('offset', offset);
+		if (TypeUtil.exists(limit)) query = query.append('limit', limit);
+
+		return this.httpClient.get<RegisterModel[]>(path, { params: query }).pipe(catchError((error) => throwError(error)));
+	}
 
 	public count(): Observable<number> {
 		let query: HttpParams = new HttpParams();

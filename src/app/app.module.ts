@@ -47,6 +47,8 @@ import { PersonService } from '../commons/services';
 import { SignupComponent } from '../app/User/signup.component';
 import { LoginComponent } from '../app/User/login.component';
 
+import { RegistersComponent } from '../app/User/registers.component';
+
 registerLocaleData(localePt); // FIXME: set this dynamically
 
 const maskConfig: Partial<IConfig> = {
@@ -110,6 +112,7 @@ const maskConfig: Partial<IConfig> = {
 		AlertComponent,
 		HeaderComponent,
 		MenuComponent,
+		RegistersComponent,
 		LoginComponent,
 		PictureComponent,
 		SnackComponent,

@@ -15,6 +15,8 @@ export class RegisterModel {
 
 	public isOnline: boolean;
 
+	public personId?: number;
+
 	constructor(json?: any) {
 		if (json != undefined && json != null) {
 			const keys: Array<string> = Object.keys(json);
@@ -25,6 +27,7 @@ export class RegisterModel {
 			if (keys.includes('risk')) this.risk = json.risk ? Number(json.risk) : json.risk;
 			if (keys.includes('priority')) this.priority = json.priority ? Number(json.priority) : json.priority;
 			if (keys.includes('isOnline')) this.isOnline = json.isOnline ? json.isOnline : json.isOnline;
+			if (keys.includes('personId')) this.personId = json.personId ? Number(json.personId) : json.personId;
 		}
 	}
 }
