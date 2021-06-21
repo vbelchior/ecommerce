@@ -1,4 +1,3 @@
-import { UserModel } from '@commons/models';
 import { Component, Input } from '@angular/core';
 
 @Component({

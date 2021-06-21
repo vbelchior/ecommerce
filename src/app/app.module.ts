@@ -43,8 +43,8 @@ import { AppComponent } from './app.component';
 import { InicioComponent } from './inicio.component';
 import { RouteModule } from './route.module';
 
-import { UserService } from '../commons/services';
-//import { UserComponent } from '../app/User/user.component';
+import { PersonService } from '../commons/services';
+import { SignupComponent } from '../app/User/signup.component';
 
 registerLocaleData(localePt); // FIXME: set this dynamically
 
@@ -112,6 +112,7 @@ const maskConfig: Partial<IConfig> = {
 		PictureComponent,
 		SnackComponent,
 		StripComponent,
+		SignupComponent,
 		WarnComponent,
 		MomentPipe,
 		TrustPipe
@@ -126,7 +127,7 @@ const maskConfig: Partial<IConfig> = {
 			provide: MatPaginatorIntl,
 			useValue: getBrazilianPaginatorIntl()
 		},
-		UserService
+		PersonService
 	],
 	bootstrap: [AppComponent]
 })
