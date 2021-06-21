@@ -19,7 +19,7 @@ const routes: Routes = [
 		component: InicioComponent
 	},
 	{
-		path: 'user',
+		path: 'registers',
 		component: UsersComponent
 	}
 ];

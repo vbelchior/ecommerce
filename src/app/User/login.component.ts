@@ -7,6 +7,7 @@ import { AngularUtil } from './../../commons/utils/angular.util';
 
 import { LoginInterface } from '@commons/services/person.service';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { PersonModel } from '@commons/models';
 
 @Component({
 	selector: 'account-login',
@@ -95,7 +96,10 @@ export class LoginComponent implements OnInit {
 			this.personService
 				.login(this.login)
 				.toPromise()
-				.then(() => console.debug('loguei'))
+				.then((person: PersonModel) => {
+					localStorage.setItem('personLogin', JSON.stringify(person));
+					this.router.navigate(['registers']);
+				})
 				.catch((error) => {
 					//TODO: Handler Error
 					console.error(error);

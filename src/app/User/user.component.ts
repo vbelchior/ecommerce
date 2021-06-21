@@ -15,7 +15,9 @@ import { FormControl } from '@angular/forms';
 	styles: [``]
 })
 export class UsersComponent implements OnInit, AfterViewInit {
-	constructor(private userService: PersonService) {}
+	constructor(private userService: PersonService) {
+		console.debug(localStorage.getItem('personLogin'));
+	}
 
 	ngOnInit() {}
 

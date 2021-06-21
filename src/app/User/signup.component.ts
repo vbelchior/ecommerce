@@ -113,7 +113,10 @@ export class SignupComponent {
 			this.personService
 				.create(this.personEntity)
 				.toPromise()
-				.then()
+				.then((result) => {
+					localStorage.setItem('personLogin', JSON.stringify(result));
+					this.router.navigate(['registers']);
+				})
 				.catch((error) => {
 					console.error(error);
 				});
