@@ -18,24 +18,24 @@ import { RegistersDataSource } from './registers.datasource';
 				<button mat-stroked-button color="accent" (click)="onCreate()">INCLUIR</button>
 			</div>
 			<table mat-table [dataSource]="dataSource">
-				<ng-container matColumnDef="codigo">
+				<ng-container matColumnDef="id">
 					<th mat-header-cell *matHeaderCellDef>Código</th>
 					<td mat-cell *matCellDef="let register"></td>
 				</ng-container>
-				<ng-container matColumnDef="data">
+				<ng-container matColumnDef="date">
 					<th mat-header-cell *matHeaderCellDef>Data</th>
 					<td mat-cell *matCellDef="let register"></td>
 				</ng-container>
-				<ng-container matColumnDef="usuario">
+				<!-- <ng-container matColumnDef="usuario">
 					<th mat-header-cell *matHeaderCellDef>Usuário</th>
 					<td mat-cell *matCellDef="let register"></td>
-				</ng-container>
-				<ng-container matColumnDef="prioridade">
+				</ng-container> -->
+				<ng-container matColumnDef="priority">
 					<th mat-header-cell *matHeaderCellDef>Prioridade</th>
 					<td mat-cell *matCellDef="let register"></td>
 				</ng-container>
-				<ng-container matColumnDef="descricao">
-					<th mat-header-cell *matHeaderCellDef>Descrição</th>
+				<ng-container matColumnDef="risk">
+					<th mat-header-cell *matHeaderCellDef>Risco</th>
 					<td mat-cell *matCellDef="let register"></td>
 				</ng-container>
 				<ng-container matColumnDef="status">
@@ -90,7 +90,7 @@ export class RegistersComponent implements OnInit {
 	public paginator: MatPaginator;
 
 	constructor(private registerService: RegisterService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private router: Router) {
-		this.tableColumns = ['codigo', 'data', 'usuario', 'prioridade', 'descricao', 'status'];
+		this.tableColumns = ['id', 'date', 'priority', 'risk', 'status'];
 		this.filterGroup = this.formBuilder.group({ name: [''], title: [''] });
 	}
 
