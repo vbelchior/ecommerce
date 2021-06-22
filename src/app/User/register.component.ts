@@ -11,7 +11,7 @@ import { TypeUtil } from '@commons/utils';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 
-import { RegisterModel } from '@commons/models';
+import { PersonModel, RegisterModel } from '@commons/models';
 import { RegisterService } from '@commons/services';
 
 export interface TemplateTransaction {
@@ -29,28 +29,22 @@ export interface TemplateTransaction {
 					<button mat-icon-button (click)="onViewRegisters()">
 						<mat-icon class="material-icons-outlined">arrow_backward</mat-icon>
 					</button>
-					<h2>Registro</h2>
+					<h2>Registro - {{ dateNow | date: 'dd/MM/yyyy' }}</h2>
 				</div>
 				<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
-					<button mat-stroked-button color="warn" (click)="onDelete()">EXCLUIR</button>
+					<!-- <button mat-stroked-button color="warn" (click)="onDelete()">EXCLUIR</button> -->
 				</div>
 			</div>
 
 			<form fxLayout="column" [formGroup]="registerGroup">
 				<div fxLayout="row" fxLayoutGap="2em">
 					<mat-form-field fxFlex="18" appearance="outline">
-						<mat-label>Data</mat-label>
-						<input matInput [matDatepicker]="picker" formControlName="date" />
-						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-						<mat-datepicker #picker></mat-datepicker>
-					</mat-form-field>
-					<mat-form-field fxFlex="18" appearance="outline">
 						<mat-label>Prioridade</mat-label>
 						<mat-select formControlName="priority" placeholder="Prioridade">
 							<mat-option> </mat-option>
-							<mat-option value="1"> Baixo </mat-option>
-							<mat-option value="2"> Médio </mat-option>
-							<mat-option value="3"> Alto </mat-option>
+							<mat-option [value]="1"> Baixo </mat-option>
+							<mat-option [value]="2"> Médio </mat-option>
+							<mat-option [value]="3"> Alto </mat-option>
 						</mat-select>
 					</mat-form-field>
 					<mat-form-field fxFlex="18" appearance="outline">
@@ -58,19 +52,18 @@ export interface TemplateTransaction {
 
 						<mat-select formControlName="risk" placeholder="Risco">
 							<mat-option> </mat-option>
-							<mat-option value="1"> Baixo </mat-option>
-							<mat-option value="2"> Médio </mat-option>
-							<mat-option value="3"> Alto </mat-option>
+							<mat-option [value]="1"> Baixo </mat-option>
+							<mat-option [value]="2"> Médio </mat-option>
+							<mat-option [value]="3"> Alto </mat-option>
 						</mat-select>
 					</mat-form-field>
-
 					<mat-form-field fxFlex="18" appearance="outline">
 						<mat-label>Status</mat-label>
 						<mat-select formControlName="status" placeholder="Status">
 							<mat-option> </mat-option>
-							<mat-option value="0"> Fechado </mat-option>
-							<mat-option value="1"> Aberto </mat-option>
-							<mat-option value="2"> Em Andamento </mat-option>
+							<mat-option [value]="0"> Fechado </mat-option>
+							<mat-option [value]="1"> Aberto </mat-option>
+							<mat-option [value]="2"> Em Andamento </mat-option>
 						</mat-select>
 					</mat-form-field>
 				</div>
@@ -116,6 +109,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
 	public registerGroup: FormGroup;
 
+	public person: PersonModel;
+
 	constructor(
 		public dialog: MatDialog,
 		private registerService: RegisterService,
@@ -125,7 +120,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 		private router: Router
 	) {
 		this.registerGroup = this.formBuilder.group({
-			date: ['', Validators.required],
 			priority: ['', Validators.required],
 			risk: ['', Validators.required],
 			status: ['', Validators.required],
@@ -133,11 +127,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 			isOnline: ['']
 		});
 		this.register = this.activatedRoute.snapshot.data.register;
+		this.person = new PersonModel(JSON.parse(localStorage.getItem('personLogin')));
 	}
 
 	public ngOnInit(): void {
 		this.registerGroup.setValue({
-			date: TypeUtil.exists(this.register.date) ? this.register.date : '',
 			priority: TypeUtil.exists(this.register.priority) ? this.register.priority : '',
 			risk: TypeUtil.exists(this.register.risk) ? this.register.risk : '',
 			status: TypeUtil.exists(this.register.status) ? this.register.status : '',
@@ -148,11 +142,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 	public ngAfterViewInit(): void {
 		this.registerGroup.valueChanges
 			.pipe(
-				debounceTime(1000),
 				distinctUntilChanged(),
 				map((group: any) => {
 					return {
-						date: group.date,
 						priority: group.priority,
 						risk: group.risk,
 						status: group.status,
@@ -186,11 +178,30 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
 	public onDelete(): void {}
 	public onSave() {
-		console.debug(this.register);
 		if (this.registerGroup.valid) {
-			this.registerService.create(this.register);
+			if (TypeUtil.exists(this.register.id)) {
+				this.registerService
+					.update(String(this.register.id), this.register)
+					.toPromise()
+					.then(() => {
+						this.snackBar.open('Registro Criado');
+					});
+			} else {
+				this.register.personId = this.person.id;
+				console.debug(this.register);
+				this.registerService
+					.create(this.register)
+					.toPromise()
+					.then(() => {
+						this.snackBar.open('Registro Alterado');
+					});
+			}
 		} else {
-			this.snackBar.open('Favor preencher todos os campos do formulário');
+			this.snackBar.open('Favor preencher todos os campos ');
 		}
+	}
+
+	public get dateNow(): Date {
+		return new Date();
 	}
 }

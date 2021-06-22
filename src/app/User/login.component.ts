@@ -91,13 +91,13 @@ export class LoginComponent implements OnInit {
 		if (!this.formGroup.valid) {
 			return;
 		} else {
-			console.debug(this.login);
-
 			this.personService
 				.login(this.login)
 				.toPromise()
 				.then((person: PersonModel) => {
 					localStorage.setItem('personLogin', JSON.stringify(person));
+					console.debug(new PersonModel(JSON.parse(localStorage.getItem('personLogin'))));
+
 					this.router.navigate(['registers']);
 				})
 				.catch((error) => {

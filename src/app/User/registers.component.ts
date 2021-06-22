@@ -20,11 +20,11 @@ import { RegistersDataSource } from './registers.datasource';
 			<table mat-table [dataSource]="dataSource">
 				<ng-container matColumnDef="id">
 					<th mat-header-cell *matHeaderCellDef>Código</th>
-					<td mat-cell *matCellDef="let register"></td>
+					<td mat-cell *matCellDef="let register">{{ register.id }}</td>
 				</ng-container>
 				<ng-container matColumnDef="date">
 					<th mat-header-cell *matHeaderCellDef>Data</th>
-					<td mat-cell *matCellDef="let register"></td>
+					<td mat-cell *matCellDef="let register">{{ register.date }}</td>
 				</ng-container>
 				<!-- <ng-container matColumnDef="usuario">
 					<th mat-header-cell *matHeaderCellDef>Usuário</th>
@@ -32,23 +32,19 @@ import { RegistersDataSource } from './registers.datasource';
 				</ng-container> -->
 				<ng-container matColumnDef="priority">
 					<th mat-header-cell *matHeaderCellDef>Prioridade</th>
-					<td mat-cell *matCellDef="let register"></td>
+					<td mat-cell *matCellDef="let register">{{ register.priority }}</td>
 				</ng-container>
 				<ng-container matColumnDef="risk">
 					<th mat-header-cell *matHeaderCellDef>Risco</th>
-					<td mat-cell *matCellDef="let register"></td>
+					<td mat-cell *matCellDef="let register">{{ register.risk }}</td>
 				</ng-container>
 				<ng-container matColumnDef="status">
 					<th mat-header-cell *matHeaderCellDef>Status</th>
-					<td mat-cell *matCellDef="let register"></td>
+					<td mat-cell *matCellDef="let register">{{ register.status }}</td>
 				</ng-container>
 				<tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
 				<tr mat-row *matRowDef="let register; columns: tableColumns" (click)="onSelect(register)"></tr>
 			</table>
-			<div fxLayout="row" fxLayoutAlign="space-between center" class="footer">
-				<div><span class="warn-color">Nenhum resultado encontrado.</span></div>
-				<mat-paginator [pageSizeOptions]="[10, 20, 50]"></mat-paginator>
-			</div>
 		</mat-card>
 	`,
 	styles: [
@@ -86,24 +82,15 @@ export class RegistersComponent implements OnInit {
 
 	public filterGroup: FormGroup;
 
-	@ViewChild(MatPaginator, { static: true })
-	public paginator: MatPaginator;
-
 	constructor(private registerService: RegisterService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private router: Router) {
 		this.tableColumns = ['id', 'date', 'priority', 'risk', 'status'];
 		this.filterGroup = this.formBuilder.group({ name: [''], title: [''] });
 	}
 
 	private loadPage(keepIndex?: boolean): void {
-		let offset: number = this.paginator.pageIndex * this.paginator.pageSize;
-		let limit: number = this.paginator.pageSize;
-		const fetchPromise: Promise<void> = this.dataSource.fetchRegisters(undefined, undefined, undefined, undefined, undefined, undefined, undefined, offset, limit);
-		//const countPromise: Promise<number> = this.registerService.count(undefined, dateFrom, dateUntil, expectFrom, expectUntil, labelLike, statusLike, tagsLike).toPromise();
+		const fetchPromise: Promise<void> = this.dataSource.fetchRegisters(undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 		Promise.all([fetchPromise])
-			.then(([fetch]) => {
-				if (!keepIndex) this.paginator.pageIndex = 0;
-				this.paginator.length = 100;
-			})
+			.then(([fetch]) => {})
 			.catch(() => {
 				this.snackBar.open('Algo inesperado ocorreu! Verifique sua conexão.', null, AngularUtil.makeSnackConfig('warn'));
 			});
@@ -114,16 +101,13 @@ export class RegistersComponent implements OnInit {
 		//this.filterGroup.valueChanges.pipe(debounceTime(1000), distinctUntilChanged()).subscribe(() => this.loadPage());
 
 		this.loadPage();
-
-		setTimeout(() => {
-			this.paginator.page.subscribe(() => this.loadPage(true));
-			this.paginator.showFirstLastButtons = true;
-		}, 100);
 	}
 
-	public onSelect(register: RegisterModel): void {}
+	public onSelect(register: RegisterModel): void {
+		this.router.navigate(['registers', register.id]);
+	}
 
 	public onCreate(): void {
-		this.router.navigate(['register', 'new']);
+		this.router.navigate(['registers', 'new']);
 	}
 }
