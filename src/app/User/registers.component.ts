@@ -17,7 +17,7 @@ import { RegistersDataSource } from './registers.datasource';
 				<h2>Registros</h2>
 				<button mat-stroked-button color="accent" (click)="onCreate()">INCLUIR</button>
 			</div>
-			<table mat-table>
+			<table mat-table [dataSource]="dataSource">
 				<ng-container matColumnDef="codigo">
 					<th mat-header-cell *matHeaderCellDef>Código</th>
 					<td mat-cell *matCellDef="let register"></td>
