@@ -24,9 +24,9 @@ export class RegisterService {
 		return this.httpClient.post<RegisterModel>(path, register).pipe(catchError((error) => throwError(error)));
 	}
 
-	public retrieve(register: RegisterModel): Observable<RegisterModel> {
-		if (!TypeUtil.exists(register.id)) return of(new RegisterModel());
-		const path: string = `${environment.server}/registers/${register.id}`;
+	public retrieve(id: string): Observable<RegisterModel> {
+		if (!TypeUtil.exists(id)) return of(new RegisterModel());
+		const path: string = `${environment.server}/registers/${id}`;
 		return this.httpClient.get<RegisterModel>(path).pipe(catchError((error) => throwError(error)));
 	}
 

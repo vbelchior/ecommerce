@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InicioComponent } from './inicio.component';
 import { LoginComponent } from './User/login.component';
+import { RegisterComponent } from './User/register.component';
+import { RegisterResolver } from './User/register.resolver';
 import { RegistersComponent } from './User/registers.component';
 import { SignupComponent } from './User/signup.component';
 import { UsersComponent } from './User/user.component';
@@ -22,6 +24,11 @@ const routes: Routes = [
 	{
 		path: 'registers',
 		component: RegistersComponent
+	},
+	{
+		path: 'registers/:id',
+		component: RegisterComponent,
+		resolve: { register: RegisterResolver }
 	}
 ];
 

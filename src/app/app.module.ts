@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -49,6 +50,8 @@ import { LoginComponent } from '../app/User/login.component';
 
 import { RegistersComponent } from '../app/User/registers.component';
 
+import { RegisterComponent } from '../app/User/register.component';
+
 registerLocaleData(localePt); // FIXME: set this dynamically
 
 const maskConfig: Partial<IConfig> = {
@@ -73,6 +76,7 @@ const maskConfig: Partial<IConfig> = {
 		MatChipsModule,
 		MatDatepickerModule,
 		MatDialogModule,
+		MatNativeDateModule,
 		MatDividerModule,
 		MatExpansionModule,
 		MatFormFieldModule,
@@ -113,6 +117,7 @@ const maskConfig: Partial<IConfig> = {
 		HeaderComponent,
 		MenuComponent,
 		RegistersComponent,
+		RegisterComponent,
 		LoginComponent,
 		PictureComponent,
 		SnackComponent,
